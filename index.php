@@ -50,60 +50,85 @@
     <title>Hotel</title>
 </head>
 <body>
+    <span>Parcheggio: </span>
+    <form action="index.php" method="GET">
+        <select name="parcheggio" id="">
+            <option value=""></option>
+            <option value="si">Si</option>
+            <option value="no">No</option>
+        </select>
+        <button type="submit">Ricerca</button>
+    </form>
 
-    <?php
-        foreach ($hotels as $element) {
-            echo $element['name'];
-            echo $element['description'];
-            echo $element['parking'];
-            echo $element['vote'];
-            echo $element['distance_to_center'];
-        }
-    ?>    
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Nome</th>
-      <th scope="col">Descrizione</th>
-      <th scope="col">Posteggio</th>
-      <th scope="col">Voto</th>
-      <th scope="col">Distanza</th>
-    </tr>
-  </thead>
-  <tbody>
-    
-      
-    <?php
-        // foreach ($hotels as $element) {
-        //     echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-        //     "<td>" . $element['description'] . "</td>" . 
-        //     "<td>" . $element['parking'] . "</td>" . 
-        //     "<td>" . $element['vote'] . "</td>" . 
-        //     "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-        // }
-
-        foreach ($hotels as $element) {
-            if ($element['parking'] == true) {
-                echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-                "<td>" . $element['description'] . "</td>" . 
-                "<td>" . 'Si' . "</td>" . 
-                "<td>" . $element['vote'] . "</td>" . 
-                "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-            }else{
-                echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-                "<td>" . $element['description'] . "</td>" . 
-                "<td>" . 'No' . "</td>" . 
-                "<td>" . $element['vote'] . "</td>" . 
-                "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-            }
-        }
-    ?>
-      
-    
-    
-  </tbody>
-</table>
-
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Descrizione</th>
+        <th scope="col">Posteggio</th>
+        <th scope="col">Voto</th>
+        <th scope="col">Distanza</th>
+        </tr>
+    </thead>
+    <tbody>    
+        
+        <?php
+        if ($_GET['parcheggio'] == "") {
+            foreach ($hotels as $element) {
+                if ($element['parking'] == true) {
+                    echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                    "<td>" . $element['description'] . "</td>" . 
+                    "<td>" . 'Si' . "</td>" . 
+                    "<td>" . $element['vote'] . "</td>" . 
+                    "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                }else{
+                    echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                    "<td>" . $element['description'] . "</td>" . 
+                    "<td>" . 'No' . "</td>" . 
+                    "<td>" . $element['vote'] . "</td>" . 
+                    "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                };
+            }; 
+        }elseif ($_GET['parcheggio'] == "si") {
+            foreach ($hotels as $element) {
+                if (in_array($element['parking'], $hotels)) {
+                    if ($element['parking'] == true) {
+                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                        "<td>" . $element['description'] . "</td>" . 
+                        "<td>" . 'Si' . "</td>" . 
+                        "<td>" . $element['vote'] . "</td>" . 
+                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                    }else{
+                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                        "<td>" . $element['description'] . "</td>" . 
+                        "<td>" . 'No' . "</td>" . 
+                        "<td>" . $element['vote'] . "</td>" . 
+                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                    };
+                };
+            };
+        }elseif ($_GET['parcheggio'] == "no"){
+            foreach ($hotels as $element) {
+                if (in_array($element['parking'] == false, $hotels)) {
+                    if ($element['parking'] == true) {
+                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                        "<td>" . $element['description'] . "</td>" . 
+                        "<td>" . 'Si' . "</td>" . 
+                        "<td>" . $element['vote'] . "</td>" . 
+                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                    }else{
+                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                        "<td>" . $element['description'] . "</td>" . 
+                        "<td>" . 'No' . "</td>" . 
+                        "<td>" . $element['vote'] . "</td>" . 
+                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                    };
+                };
+            };
+        };     
+        ?>
+        
+    </tbody>
+    </table>
 </body>
 </html>
