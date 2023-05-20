@@ -52,10 +52,18 @@
 <body>
     <span>Parcheggio: </span>
     <form action="index.php" method="GET">
-        <select name="parcheggio" id="">
+        <select name="parcheggio">
             <option value=""></option>
             <option value="si">Si</option>
             <option value="no">No</option>
+        </select>
+        <select name="valutazione">
+            <option value=""></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
         </select>
         <button type="submit">Ricerca</button>
     </form>
@@ -73,7 +81,7 @@
     <tbody>    
         
         <?php
-        if ($_GET['parcheggio'] == "") {
+        if ($_GET['parcheggio'] == "" && $_GET['valutazione'] == "") {
             foreach ($hotels as $element) {
                 if ($element['parking'] == true) {
                     echo "<tr>" . "<td>" . $element['name'] . "</td>" .
@@ -91,17 +99,11 @@
             }; 
         }elseif ($_GET['parcheggio'] == "si") {
             foreach ($hotels as $element) {
-                if (in_array($element['parking'], $hotels)) {
+                if (in_array($element['parking'], $hotels) && in_array($element['vote'] >= $_GET['valutazione'], $hotels)) {
                     if ($element['parking'] == true) {
                         echo "<tr>" . "<td>" . $element['name'] . "</td>" .
                         "<td>" . $element['description'] . "</td>" . 
                         "<td>" . 'Si' . "</td>" . 
-                        "<td>" . $element['vote'] . "</td>" . 
-                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-                    }else{
-                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-                        "<td>" . $element['description'] . "</td>" . 
-                        "<td>" . 'No' . "</td>" . 
                         "<td>" . $element['vote'] . "</td>" . 
                         "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
                     };
@@ -109,23 +111,31 @@
             };
         }elseif ($_GET['parcheggio'] == "no"){
             foreach ($hotels as $element) {
-                if (in_array($element['parking'] == false, $hotels)) {
-                    if ($element['parking'] == true) {
-                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-                        "<td>" . $element['description'] . "</td>" . 
-                        "<td>" . 'Si' . "</td>" . 
-                        "<td>" . $element['vote'] . "</td>" . 
-                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-                    }else{
-                        echo "<tr>" . "<td>" . $element['name'] . "</td>" .
-                        "<td>" . $element['description'] . "</td>" . 
-                        "<td>" . 'No' . "</td>" . 
-                        "<td>" . $element['vote'] . "</td>" . 
-                        "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
-                    };
+                if (in_array($element['parking'] == false, $hotels) && in_array($element['vote'] >= $_GET['valutazione'], $hotels)) {
+                    echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                    "<td>" . $element['description'] . "</td>" . 
+                    "<td>" . 'No' . "</td>" . 
+                    "<td>" . $element['vote'] . "</td>" . 
+                    "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";   
                 };
             };
-        };     
+        }elseif($_GET['valutazione']){
+            foreach ($hotels as $element) {
+                if (in_array($element['parking'] == true, $hotels) && in_array($element['vote'] >= $_GET['valutazione'], $hotels)) {
+                    echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                    "<td>" . $element['description'] . "</td>" . 
+                    "<td>" . 'Si' . "</td>" . 
+                    "<td>" . $element['vote'] . "</td>" . 
+                    "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                }elseif(in_array($element['parking'] == false, $hotels) && in_array($element['vote'] >= $_GET['valutazione'], $hotels)){
+                    echo "<tr>" . "<td>" . $element['name'] . "</td>" .
+                    "<td>" . $element['description'] . "</td>" . 
+                    "<td>" . 'No' . "</td>" . 
+                    "<td>" . $element['vote'] . "</td>" . 
+                    "<td>" . $element['distance_to_center'] . "</td>" . "</tr>";
+                }
+            }
+        }     
         ?>
         
     </tbody>
